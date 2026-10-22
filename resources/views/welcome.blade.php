@@ -7,10 +7,10 @@
     </head>
     <body>
         <header>
-            <h1>Framework Laravel</h1>
+            <h1>PRONET - SOLUÇÕES</h1>
         </header>
         <main>
-            <a href="{{ route('conta.index') }}">Listar as contas</a>
+            <a href="{{ route('conta.index') }}">Listar assinantes</a>
         </main>
     </body>
 </html>

@@ -6,6 +6,7 @@ use Exception;
 use App\Http\Requests\ContaRequest;
 use App\Models\Conta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ContaController extends Controller
 {
@@ -34,10 +35,15 @@ class ContaController extends Controller
         try {
             // Cadastrar no BD na tabela 'contas' os valores de todos os campos
             $conta = Conta::create($request->all());
+            
+            // Salvar log
+            Log::info('Conta cadastrada', ['id' => $conta->id, 'conta' => $conta]);
 
             // Redirecionar para tela de vizualização + mensagem de sucesso.
             return redirect()->route('conta.show', ['contaSelecionadaId' => $conta->id])->with('sucess', 'Conta cadastrada com sucesso');
+            
         } catch (Exception $error) {
+        
             // Retorna mensagem de erro personalizada.
             return back()->withInput()->with('error', 'Não foi possível cadastrar. Tente novamente mais tarde');
         }
@@ -68,12 +74,17 @@ class ContaController extends Controller
             'nome' => $request->nome,
             'valor' => $request->valor,
             'vencimento' => $request->vencimento
-        ]); 
+        ]);
+
+        // Salvar log
+        Log::info('Conta editada', ['conta' => $conta]);
         
         // Redirecionar para tela de vizualização + mensagem de sucesso.
         return redirect()->route('conta.show', ['contaSelecionadaId' => $contaSelecionadaId->id])->with('sucess', 'Conta editada com sucesso');
 
         } catch (Exception $error) {
+            // Salvar Log
+            Log::warning('Erro ao tentar editar registro', ['erro' => $error->getMessage()]);
 
             // Retorna mensagem de erro personalizada.
             return back()->withInput()->with('error', 'Não foi possível editar no momento. Tente novamente mais tarde');
