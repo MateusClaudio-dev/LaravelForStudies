@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Http\Requests\ContaRequest;
 use App\Models\Conta;
 use Illuminate\Http\Request;
@@ -12,8 +13,8 @@ class ContaController extends Controller
     public function index() 
     {
         // Recupera os registro do BD
-        $contas = Conta::where('id', 100)->orderByDesc('created_at')->get();
-        
+        $contas = Conta::orderByDesc('created_at')->get();
+
         // Carrega a view
         return view('contas.index', ['contas' => $contas]);
     }
@@ -30,34 +31,60 @@ class ContaController extends Controller
         // Validar formulário
         $request->validated();
 
-        // Cadastrar no BD na tabela 'contas' os valores de todos os campos
-        Conta::create($request->all());
+        try {
+            // Cadastrar no BD na tabela 'contas' os valores de todos os campos
+            $conta = Conta::create($request->all());
 
-        // Redirecionar para conta.show
-        return redirect()->route('conta.show')->with('sucess', 'Conta cadastrada com sucesso');
+            // Redirecionar para tela de vizualização + mensagem de sucesso.
+            return redirect()->route('conta.show', ['contaSelecionadaId' => $conta->id])->with('sucess', 'Conta cadastrada com sucesso');
+        } catch (Exception $error) {
+            // Retorna mensagem de erro personalizada.
+            return back()->withInput()->with('error', 'Não foi possível cadastrar. Tente novamente mais tarde');
+        }
+
     }
 
     // Mostar contas salvas no BD
-    public function show()
+    public function show(Conta $contaSelecionadaId)
     {
-        return view('contas.show');
+        // Exibi detalhes da conta apontada pela URL por meio do ID
+        return view ('contas.show', ['conta' => $contaSelecionadaId]);
     }
 
     // Carregar formulário editar conta
-    public function edit()
+    public function edit(Conta $contaSelecionadaId)
     {
-        return view('contas.edit');
+
+        return view('contas.edit', ['conta' => $contaSelecionadaId]);
     }
 
     // Editar no BD a conta
-    public function update()
-    {
-        dd("Editar");
+    public function update(ContaRequest $request, Conta $contaSelecionadaId)
+    {   
+        $request->validated();
+
+        try {
+           $contaEditada = $contaSelecionadaId->update([
+            'nome' => $request->nome,
+            'valor' => $request->valor,
+            'vencimento' => $request->vencimento
+        ]); 
+        
+        // Redirecionar para tela de vizualização + mensagem de sucesso.
+        return redirect()->route('conta.show', ['contaSelecionadaId' => $contaSelecionadaId->id])->with('sucess', 'Conta editada com sucesso');
+
+        } catch (Exception $error) {
+
+            // Retorna mensagem de erro personalizada.
+            return back()->withInput()->with('error', 'Não foi possível editar no momento. Tente novamente mais tarde');
+        }
     }
 
     // Excluir a conta do BD
-    public function destroy()
+    public function destroy(Conta $contaSelecionadaId)
     {
-        dd("Apagar");
+        $contaSelecionadaId->delete();
+
+        return redirect()->route('conta.index')->with('sucess', 'Conta apagada');
     }
 }

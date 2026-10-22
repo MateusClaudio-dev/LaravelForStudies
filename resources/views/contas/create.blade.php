@@ -7,11 +7,20 @@
 </head>
 <body>
     <header>
-        <a href="{{ route('conta.index') }}">Listar Contas</a> <br>
+        <a href="{{ route('conta.index') }}">
+            <button>Listar Contas</button>
+        </a> <br>
+
+        @if (session('error'))
+            <span style="color: red;" id="alert_error_session">
+                {{ session('error')}}
+            </span>
+        @endif
+
         @if ($errors->any())
-            <span style="color: red;">
+            <span style="color: red;" id="alert_error_request">
                 @foreach ($errors->all() as $error)
-                    {{ $error }} <br>
+                    <span>{{ $error }}</span> <br>
                 @endforeach
             </span>
         @endif
