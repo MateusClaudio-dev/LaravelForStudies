@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="py-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes</title>
-</head>
-<body>
+@extends('layout.admin')
+@section('content')
     <header><h1>Detalhes da conta</h1>
         @if( session('sucess') )
             <span style="color: green;">{{ session('sucess') }}</span>
@@ -42,7 +36,5 @@
                     <button>Listar Contas</button>
                 </a>
         </div>
-        
     </footer>
-</body>
-</html>
+@endsection

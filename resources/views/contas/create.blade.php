@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar</title>
-</head>
-<body>
+@extends('layout.admin')
+@section('content')
     <header>
         <a href="{{ route('conta.index') }}">
             <button>Listar Contas</button>
@@ -35,7 +29,7 @@
                 
 
                 <label for="valor">Valor:</label>
-                <input type="text" name="valor" id="valor" value="{{ old('valor') }}"> <br>
+                <input type="text" name="valor" id="valor" value="{{ old('valor') }}"> <br> 
 
                 <label for="vencimento">Vencimento:</label>
                 <input type="date" name="vencimento" id="vencimento" value="{{ old('vencimento') }}"> <br> <br>
@@ -47,6 +41,5 @@
         </form>
     </main>
     <footer></footer>
-</body>
-</html>
+@endsection
 

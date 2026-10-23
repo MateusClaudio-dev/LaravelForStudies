@@ -1,0 +1,287 @@
+/* ==========================================================
+   Pronet | Hero section
+   Paleta: azul escuro, roxo e preto
+   ========================================================== */
+
+:root {
+  --black:   #04030a;
+  --navy:    #070b24;
+  --indigo:  #101650;
+  --violet:  #6a3dff;
+  --blue:    #2d6cff;
+  --text:    #eef0ff;
+  --muted:   #a4aad8;
+  --line:    rgba(150, 160, 255, 0.22);
+
+  --globe-size: clamp(210px, 42vmin, 460px);
+  --font: "Sora", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--black);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;          /* permite mover o globo com o toque */
+  background:
+    radial-gradient(120% 90% at 50% 38%, var(--indigo) 0%, var(--navy) 38%, var(--black) 78%);
+}
+
+/* Estrelas / rede */
+.hero__space {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -3;
+}
+
+/* Brilhos coloridos de fundo (se movem levemente com o ponteiro) */
+.hero__glow {
+  position: absolute;
+  z-index: -2;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  pointer-events: none;
+  will-change: transform;
+}
+.hero__glow--blue {
+  width: 46vmax; height: 46vmax;
+  left: -14vmax; top: -10vmax;
+  background: radial-gradient(circle, var(--blue), transparent 68%);
+  transform: translate3d(calc(var(--px, 0) * -26px), calc(var(--py, 0) * -20px), 0);
+}
+.hero__glow--violet {
+  width: 52vmax; height: 52vmax;
+  right: -18vmax; bottom: -20vmax;
+  background: radial-gradient(circle, var(--violet), transparent 68%);
+  transform: translate3d(calc(var(--px, 0) * 30px), calc(var(--py, 0) * 22px), 0);
+}
+
+/* Grade tecnológica discreta que some nas bordas */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(130, 140, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(130, 140, 255, 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 78%);
+          mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 78%);
+}
+
+/* ---------- Topo / Admin ---------- */
+.topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: clamp(16px, 3vw, 32px) clamp(16px, 4vw, 48px);
+  z-index: 5;
+}
+
+.btn-admin {
+  padding: 9px 22px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(16, 22, 80, 0.35);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+.btn-admin:hover {
+  border-color: rgba(150, 140, 255, 0.7);
+  background: rgba(106, 61, 255, 0.22);
+  box-shadow: 0 0 24px rgba(106, 61, 255, 0.35);
+}
+
+/* ---------- Conteúdo ---------- */
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 72px 24px 40px;
+  max-width: 760px;
+}
+
+/* ---------- Globo ---------- */
+.globe-stage {
+  perspective: 900px;
+  margin-bottom: clamp(8px, 2.5vh, 28px);
+  animation: enter 1.4s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.globe {
+  position: relative;
+  width: var(--globe-size);
+  height: var(--globe-size);
+  transform-style: preserve-3d;
+  /* Variáveis atualizadas pelo script.js */
+  transform:
+    translate3d(var(--tx, 0px), var(--ty, 0px), 0)
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    rotateZ(var(--rz, 0deg))
+    scale(var(--s, 1));
+  will-change: transform;
+  cursor: grab;
+}
+
+/* Aura azul/roxa atrás do globo */
+.globe__halo {
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(45, 108, 255, 0.5) 0%, rgba(106, 61, 255, 0.28) 42%, transparent 70%);
+  filter: blur(26px);
+  animation: pulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Recorte circular que centraliza o globo da imagem e funde o fundo preto */
+.globe__body {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
+          mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
+}
+
+/* O globo na imagem original está deslocado para a direita:
+   largura/offset calculados para centralizá-lo no círculo */
+.globe__img {
+  position: absolute;
+  width: 156.25%;
+  height: auto;
+  left: -55.5%;
+  top: -8.6%;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* ---------- Texto ---------- */
+.hero__title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: enter 1.4s .25s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.hero__name {
+  font-size: clamp(2.8rem, 7vw, 4.8rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 30%, #b9bdff 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+          color: transparent;
+}
+
+.hero__tagline {
+  font-size: clamp(1rem, 2.4vw, 1.45rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.hero__text {
+  margin: clamp(14px, 2.6vh, 22px) 0 0;
+  max-width: 44ch;
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--muted);
+  animation: enter 1.4s .4s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.btn-cta {
+  margin-top: clamp(20px, 3.5vh, 32px);
+  padding: 14px 34px;
+  border-radius: 999px;
+  background: linear-gradient(110deg, var(--blue), var(--violet));
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow: 0 10px 34px rgba(80, 80, 255, 0.35);
+  transition: transform .25s, box-shadow .25s;
+  animation: enter 1.4s .55s cubic-bezier(.2, .7, .2, 1) both;
+}
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 42px rgba(110, 80, 255, 0.55);
+}
+
+/* Foco visível para teclado */
+.btn-admin:focus-visible,
+.btn-cta:focus-visible {
+  outline: 2px solid #b9bdff;
+  outline-offset: 3px;
+}
+
+/* ---------- Animações ---------- */
+@keyframes enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.06); }
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 600px) {
+  .hero__content { padding-top: 80px; }
+  .hero__glow { filter: blur(70px); }
+}
+
+@media (max-height: 640px) and (orientation: landscape) {
+  :root { --globe-size: clamp(150px, 46vh, 300px); }
+  .hero__text { display: none; }
+}
+
+/* ---------- Acessibilidade: reduz movimento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .globe-stage,
+  .hero__title,
+  .hero__text,
+  .btn-cta,
+  .globe__halo { animation: none; }
+}

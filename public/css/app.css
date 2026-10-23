@@ -1,4 +1,4 @@
-/* 
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -39,4 +39,10 @@
     th {
         font-weight: 600;
         letter-spacing: 0.5px;
-    } */
+    }
+
+    .container_buttons {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 30px;
+    }

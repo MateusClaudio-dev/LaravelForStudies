@@ -34,7 +34,11 @@ class ContaController extends Controller
 
         try {
             // Cadastrar no BD na tabela 'contas' os valores de todos os campos
-            $conta = Conta::create($request->all());
+            $conta = Conta::create([
+                'nome' => $request->nome,
+                'valor' => str_replace(',', '.', str_replace('.', '', $request->valor)),
+                'vencimento' => $request->vencimento
+            ]);
             
             // Salvar log
             Log::info('Conta cadastrada', ['id' => $conta->id, 'conta' => $conta]);
@@ -43,7 +47,9 @@ class ContaController extends Controller
             return redirect()->route('conta.show', ['contaSelecionadaId' => $conta->id])->with('sucess', 'Conta cadastrada com sucesso');
             
         } catch (Exception $error) {
-        
+            // Salvar Log
+            Log::warning('Erro ao tentar salvar registro', ['erro' => $error->getMessage()]);
+
             // Retorna mensagem de erro personalizada.
             return back()->withInput()->with('error', 'Não foi possível cadastrar. Tente novamente mais tarde');
         }
@@ -72,12 +78,12 @@ class ContaController extends Controller
         try {
            $contaEditada = $contaSelecionadaId->update([
             'nome' => $request->nome,
-            'valor' => $request->valor,
+            'valor' => str_replace( ',', '.', str_replace( '.', '', $request->valor) ),
             'vencimento' => $request->vencimento
         ]);
 
         // Salvar log
-        Log::info('Conta editada', ['conta' => $conta]);
+        Log::info('Conta editada', ['conta' => $contaSelecionadaId]);
         
         // Redirecionar para tela de vizualização + mensagem de sucesso.
         return redirect()->route('conta.show', ['contaSelecionadaId' => $contaSelecionadaId->id])->with('sucess', 'Conta editada com sucesso');
