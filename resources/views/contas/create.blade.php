@@ -13,13 +13,13 @@
             </div>
            
             @if( session('sucess') )
-                <div class="alert alert-success m-3" role="alert">
+                <div class="alert alert-success m-3" id="alert" role="alert">
                     {{ session('sucess') }}
                 </div>
             @endif
 
             @if($errors->any())
-                <div class="alert alert-danger m-3" role="alert">
+                <div class="alert alert-danger m-3" id="alert" role="alert">
                     @foreach($errors->all() as $error)
                         {{$error}}<br>
                     @endforeach

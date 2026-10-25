@@ -25,7 +25,7 @@
             @endif
 
             @if($errors->any())
-                <div class="alert alert-danger m-3" role="alert">
+                <div class="alert alert-danger m-3" id="alert" role="alert">
                     @foreach($errors->all() as $error)
                         {{$error}}
                     @endforeach
