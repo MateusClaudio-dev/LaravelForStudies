@@ -1,1 +1,2 @@
+// Arquivo bootstrap
 import './bootstrap';

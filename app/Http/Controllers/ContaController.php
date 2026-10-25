@@ -44,7 +44,7 @@ class ContaController extends Controller
             Log::info('Conta cadastrada', ['id' => $conta->id, 'conta' => $conta]);
 
             // Redirecionar para tela de vizualização + mensagem de sucesso.
-            return redirect()->route('conta.show', ['contaSelecionadaId' => $conta->id])->with('sucess', 'Conta cadastrada com sucesso');
+            return redirect()->route('conta.show', ['contaSelecionadaId' => $conta->id])->with('sucess', 'Cliente cadastrada com sucesso');
             
         } catch (Exception $error) {
             // Salvar Log
@@ -86,7 +86,7 @@ class ContaController extends Controller
         Log::info('Conta editada', ['conta' => $contaSelecionadaId]);
         
         // Redirecionar para tela de vizualização + mensagem de sucesso.
-        return redirect()->route('conta.show', ['contaSelecionadaId' => $contaSelecionadaId->id])->with('sucess', 'Conta editada com sucesso');
+        return redirect()->route('conta.show', ['contaSelecionadaId' => $contaSelecionadaId->id])->with('sucess', 'Registro editado com sucesso');
 
         } catch (Exception $error) {
             // Salvar Log

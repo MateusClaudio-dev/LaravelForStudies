@@ -42,8 +42,9 @@
     <div class="hero__grid" aria-hidden="true"></div>
 
     <!-- Topo -->
-    <nav class="topbar" aria-label="Acesso administrativo">
-      <a class="btn-admin" href="{{ route('conta.index') }}">Admin</a>
+    <nav class="topbar" aria-label="Acesso administrativo" style=" gap: 15px;">
+      <a class="btn-admin" href="https://pronetsolucoescentral.beesweb.com.br/login">Portal do cliente</a>
+      <a class="btn-admin" href="{{ route('conta.index') }}">Portal do Administrador</a>
     </nav>
 
     <!-- Conteúdo central -->
